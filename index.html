@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KHAIRDIDACT · Méthodes pédagogiques Alpha/FLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════
+       VARIABLES & RESET
+    ══════════════════════════════ */
+    :root {
+      --ink:        #1a1a2e;
+      --paper:      #f5f0e8;
+      --paper-dark: #ede7d9;
+      --sage:       #3d6b4f;
+      --sage-lite:  #5a9470;
+      --sage-pale:  #e8f0eb;
+      --gold:       #c9952a;
+      --gold-pale:  #fdf3e0;
+      --dust:       #ddd5c4;
+      --muted:      #7a7264;
+      --white:      #ffffff;
+      --red:        #b94040;
+      --radius:     14px;
+      --drive:      #1967D2;
+      --drive-pale: #e8f0fe;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ══════════════════════════════
+       LAYOUT
+    ══════════════════════════════ */
+    .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 44px 24px 80px; }
+
+    /* ══════════════════════════════
+       HEADER GLOBAL
+    ══════════════════════════════ */
+    .site-header { text-align: center; margin-bottom: 40px; }
+    .brand {
+      font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--sage); font-weight: 500; margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .brand::before, .brand::after { content:''; width:36px; height:1px; background:var(--sage-lite); display:block; }
+    .site-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 5vw, 42px);
+      line-height: 1.12; margin-bottom: 12px;
+    }
+    .site-title em { font-style: italic; color: var(--sage); }
+    .site-subtitle {
+      font-size: 14px; color: var(--muted);
+      max-width: 500px; margin: 0 auto 24px; line-height: 1.7;
+    }
+
+    /* Drive CTA banner */
+    .drive-banner {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--drive-pale);
+      border: 1.5px solid #c5d8fc;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 13px; color: var(--drive);
+      font-weight: 500; letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      margin-bottom: 32px;
+    }
+    .drive-banner:hover {
+      background: #d4e4fd; transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(25,103,210,.15);
+    }
+    .drive-banner svg { flex-shrink: 0; }
+
+    /* ══════════════════════════════
+       TAB NAVIGATION
+    ══════════════════════════════ */
+    .tabs {
+      display: flex; gap: 4px;
+      background: var(--paper-dark);
+      border-radius: 12px; padding: 4px;
+      margin-bottom: 40px;
+      max-width: 440px; margin-left: auto; margin-right: auto;
+    }
+    .tab-btn {
+      flex: 1; padding: 11px 16px;
+      background: transparent; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400;
+      color: var(--muted); border-radius: 9px;
+      transition: background .2s, color .2s, box-shadow .2s;
+      letter-spacing: 0.02em; display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .tab-btn.active {
+      background: var(--white); color: var(--ink); font-weight: 500;
+      box-shadow: 0 2px 10px rgba(26,26,46,.1);
+    }
+    .tab-btn .tab-icon { font-size: 15px; }
+
+    /* ══════════════════════════════
+       TAB PANELS
+    ══════════════════════════════ */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ══════════════════════════════
+       ── PANEL 1 : TIRAGE ──
+    ══════════════════════════════ */
+    .tirage-wrap {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .panel-intro { text-align: center; margin-bottom: 36px; }
+    .panel-intro h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px,4vw,32px); margin-bottom: 10px;
+    }
+    .panel-intro h2 em { font-style: italic; color: var(--sage); }
+    .panel-intro p { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 440px; margin: 0 auto; }
+
+    /* Progress */
+    .progress-wrap { width:100%; margin: 0 0 28px; }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .progress-bar-bg { height: 6px; background: var(--dust); border-radius: 99px; overflow: hidden; }
+    .progress-bar-fill {
+      height: 100%; background: var(--sage); border-radius: 99px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1); width: 0%;
+    }
+
+    /* Dots */
+    .dots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 36px; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--dust); border: 1.5px solid #c8c0b0;
+      transition: background .3s, border-color .3s, transform .3s;
+    }
+    .dot.used  { background: var(--sage-lite); border-color: var(--sage); transform: scale(1.15); }
+    .dot.current {
+      background: var(--gold); border-color: #a07820; transform: scale(1.3);
+      box-shadow: 0 0 0 3px rgba(201,149,42,.2);
+    }
+
+    /* Result zone */
+    .result-zone {
+      width: 100%; background: var(--white);
+      border: 1.5px solid var(--dust); border-radius: var(--radius);
+      padding: 36px 32px; min-height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; margin-bottom: 28px; position: relative; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(26,26,46,.06); transition: box-shadow .3s;
+    }
+    .result-zone::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--sage), var(--gold));
+      opacity: 0; transition: opacity .4s;
+    }
+    .result-zone.has-result::before { opacity: 1; }
+    .result-zone.has-result { box-shadow: 0 8px 40px rgba(26,26,46,.10); }
+
+    .result-placeholder {
+      color: var(--muted); font-size: 14px; letter-spacing: 0.04em;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .result-placeholder svg { opacity: 0.3; }
+    .result-duo {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 8px; font-weight: 500; display: none;
+    }
+    .result-numero {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 16px; display: none;
+    }
+    .result-method {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px,5vw,32px); line-height: 1.2; color: var(--ink);
+      display: none; animation: slideUp .45s cubic-bezier(.2,.8,.3,1) both;
+    }
+    .result-icon {
+      font-size: 40px; margin-bottom: 16px; display: none;
+      animation: popIn .4s cubic-bezier(.2,.8,.3,1) both; animation-delay: .05s;
+    }
+    .result-remaining { margin-top: 14px; font-size: 12px; color: var(--muted); display: none; }
+
+    /* Drive shortcut inside result zone */
+    .result-drive-link {
+      display: none; margin-top: 16px;
+      align-items: center; gap: 7px;
+      font-size: 12px; color: var(--drive);
+      text-decoration: none; font-weight: 500;
+      background: var(--drive-pale); border: 1px solid #c5d8fc;
+      padding: 7px 14px; border-radius: 7px;
+      transition: background .2s;
+    }
+    .result-drive-link:hover { background: #d4e4fd; }
+    .result-zone.has-result .result-drive-link { display: flex; }
+
+    .completed-msg {
+      display: none; flex-direction: column; align-items: center; gap: 10px; color: var(--sage);
+    }
+    .completed-msg .big { font-family: 'DM Serif Display', serif; font-size: 28px; }
+    .completed-msg .small { font-size: 13px; color: var(--muted); }
+
+    /* Buttons */
+    .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-draw {
+      background: var(--sage); color: white; border: none;
+      padding: 16px 36px; font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 500; border-radius: var(--radius);
+      cursor: pointer; display: flex; align-items: center; gap: 10px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(61,107,79,.25); letter-spacing: 0.02em;
+    }
+    .btn-draw:hover { background: var(--sage-lite); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(61,107,79,.3); }
+    .btn-draw:active { transform: translateY(0); }
+    .btn-draw:disabled { background: #b0b8b4; box-shadow: none; cursor: not-allowed; transform: none; }
+    .btn-draw .dice { font-size: 20px; transition: transform .3s; display: inline-block; }
+    .btn-draw:not(:disabled):hover .dice { transform: rotate(20deg) scale(1.2); }
+    .btn-reset {
+      background: transparent; color: var(--muted); border: 1.5px solid var(--dust);
+      padding: 16px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+      border-radius: var(--radius); cursor: pointer;
+      transition: border-color .2s, color .2s, transform .15s; letter-spacing: 0.02em;
+    }
+    .btn-reset:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); }
+
+    /* History */
+    .history-toggle { margin-top: 40px; border-top: 1px solid var(--dust); padding-top: 24px; width: 100%; }
+    .history-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 8px; padding: 4px 0; transition: color .2s;
+    }
+    .history-btn:hover { color: var(--sage); }
+    .history-btn .arrow { transition: transform .3s; }
+    .history-btn.open .arrow { transform: rotate(180deg); }
+    .history-list { display: none; margin-top: 16px; list-style: none; }
+    .history-list.visible { display: block; }
+    .history-list li {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 9px 0; border-bottom: 1px solid var(--dust); font-size: 14px;
+      animation: fadeIn .3s ease both;
+    }
+    .history-list li:last-child { border-bottom: none; }
+    .history-num { font-size: 11px; color: var(--muted); min-width: 22px; text-align: right; }
+    .history-icon { font-size: 16px; }
+    .history-name { color: var(--ink); font-weight: 400; }
+
+    /* ══════════════════════════════
+       ── PANEL 2 : CARTES ──
+    ══════════════════════════════ */
+    .cartes-header { text-align: center; margin-bottom: 36px; }
+    .cartes-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px,4vw,32px); margin-bottom: 10px;
+    }
+    .cartes-header h2 em { font-style: italic; color: var(--sage); }
+    .cartes-header p { font-size: 14px; color: var(--muted); max-width: 520px; margin: 0 auto 24px; line-height: 1.7; }
+
+    /* Filters */
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px; }
+    .filter-btn {
+      background: var(--white); border: 1.5px solid var(--dust);
+      padding: 8px 18px; border-radius: 99px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px;
+      letter-spacing: 0.06em; cursor: pointer; transition: all .2s;
+      color: var(--muted); font-weight: 500;
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--sage); color: var(--sage); background: var(--sage-pale); }
+
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+
+    /* Card */
+    .card {
+      background: var(--white); border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 2px 16px rgba(26,26,46,.07);
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s; cursor: pointer;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,26,46,.12); }
+    .card-accent { height: 5px; }
+    .card-body { padding: 24px 26px 18px; flex: 1; display: flex; flex-direction: column; }
+    .card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .card-icon-wrap {
+      width: 46px; height: 46px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; flex-shrink: 0;
+    }
+    .card-meta { flex: 1; }
+    .card-num { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+    .card-title { font-family: 'DM Serif Display', serif; font-size: 16px; line-height: 1.25; color: var(--ink); }
+    .card-divider { height: 1px; background: var(--paper-dark); margin: 0 0 16px; }
+    .card-scenario-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 7px; }
+    .card-scenario {
+      font-size: 13px; line-height: 1.7; color: #333; font-style: italic;
+      background: var(--paper); border-left: 3px solid currentColor;
+      padding: 11px 13px; border-radius: 0 8px 8px 0; margin-bottom: 16px; flex: 1;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+    .tag { font-size: 11px; padding: 3px 9px; border-radius: 99px; font-weight: 400; }
+    .tag-activity { background: var(--sage-pale); color: #2d5038; border: 1px solid #b8d4c0; }
+    .card-footer-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 9px;
+      margin-top: auto; padding-top: 13px; border-top: 1px solid var(--paper-dark);
+    }
+    .card-footer-item { display: flex; flex-direction: column; gap: 3px; }
+    .card-footer-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+    .card-footer-val { font-size: 12px; color: var(--ink); line-height: 1.4; }
+
+    /* Print bar */
+    .print-bar { text-align: center; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--dust); }
+    .btn-print {
+      background: transparent; border: 1.5px solid var(--dust);
+      padding: 11px 26px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      color: var(--muted); cursor: pointer; transition: all .2s; letter-spacing: 0.04em;
+    }
+    .btn-print:hover { border-color: var(--sage); color: var(--sage); }
+
+    /* ══════════════════════════════
+       MODAL
+    ══════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(26,26,46,.55); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 18px;
+      max-width: 580px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(26,26,46,.25);
+      animation: modalIn .3s cubic-bezier(.2,.8,.3,1) both;
+    }
+    @keyframes modalIn { from { opacity:0; transform: scale(.94) translateY(12px); } to { opacity:1; transform: scale(1) translateY(0); } }
+    .modal-top { height: 6px; border-radius: 18px 18px 0 0; }
+    .modal-inner { padding: 28px 32px 34px; }
+    .modal-close {
+      float: right; background: var(--paper); border: none;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: background .2s, color .2s;
+    }
+    .modal-close:hover { background: var(--dust); color: var(--ink); }
+    .modal-num { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .modal-title { font-family: 'DM Serif Display', serif; font-size: 25px; line-height: 1.2; margin-bottom: 20px; }
+    .modal-section { margin-bottom: 18px; }
+    .modal-section-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+    .modal-scenario {
+      font-size: 14px; line-height: 1.75; color: #2a2a2a; font-style: italic;
+      background: var(--paper); border-left: 4px solid var(--sage);
+      padding: 13px 15px; border-radius: 0 10px 10px 0;
+    }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-item { background: var(--paper); border-radius: 10px; padding: 11px 13px; }
+    .modal-item-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .modal-item-val { font-size: 13px; color: var(--ink); line-height: 1.5; }
+    .modal-vigilance-text { font-size: 13px; line-height: 1.65; color: var(--muted); }
+
+    /* Drive button inside modal */
+    .modal-drive-btn {
+      display: flex; align-items: center; gap: 9px;
+      background: var(--drive-pale); border: 1.5px solid #c5d8fc;
+      color: var(--drive); border-radius: 10px;
+      padding: 12px 18px; text-decoration: none;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      transition: background .2s, transform .15s; margin-top: 6px;
+      letter-spacing: 0.02em; width: 100%; justify-content: center;
+    }
+    .modal-drive-btn:hover { background: #d4e4fd; transform: translateY(-1px); }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    .site-footer {
+      margin-top: 64px; padding-top: 28px;
+      border-top: 1px solid var(--dust);
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 16px;
+    }
+    .site-footer-left { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .site-footer-left a { color: var(--sage-lite); text-decoration: none; }
+    .footer-drive-link {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; color: var(--drive); font-weight: 500;
+      text-decoration: none; background: var(--drive-pale);
+      border: 1px solid #c5d8fc; padding: 7px 14px; border-radius: 8px;
+      transition: background .2s;
+    }
+    .footer-drive-link:hover { background: #d4e4fd; }
+
+    /* ══════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════ */
+    @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes popIn   { from { opacity:0; transform:scale(.6); } to { opacity:1; transform:scale(1); } }
+    @keyframes fadeIn  { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes spin    { to { transform: rotate(360deg); } }
+    .spinning { animation: spin .4s linear !important; }
+
+    /* ══════════════════════════════
+       PRINT
+    ══════════════════════════════ */
+    @media print {
+      body::before { display:none; }
+      .tabs, .tirage-wrap, .print-bar, .site-footer, .modal-overlay,
+      .drive-banner, .controls { display:none !important; }
+      .tab-panel { display: block !important; }
+      #panel-tirage { display: none !important; }
+      .grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .card { box-shadow: none; border: 1px solid var(--dust); break-inside: avoid; }
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-footer-row { grid-template-columns: 1fr; }
+      .modal-grid { grid-template-columns: 1fr; }
+      .site-footer { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER GLOBAL ── -->
+  <header class="site-header">
+    <div class="brand">Khairdidact · Armée du Salut · Formation bénévole</div>
+    <h1 class="site-title">Méthodes pédagogiques<br/><em>Alpha &amp; FLE</em></h1>
+    <p class="site-subtitle">
+      Outil de tirage au sort pour duos d'apprenants et cartes scénarios contextualisées —
+      12 méthodes, 12 situations réelles de formation.
+    </p>
+    <a class="drive-banner"
+       href="https://drive.google.com/drive/folders/12HkRH7IT9aC6PdTbNlmEASg0lp8538O8?usp=sharing"
+       target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5L6.6 66.85z" fill="#0066DA"/>
+        <path d="M43.65 25L29.9 1.2C28.55.4 27 0 25.45 0c-1.55 0-3.1.4-4.45 1.2L7.25 25h36.4z" fill="#00AC47"/>
+        <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.1l5.55 10.85 7.9 12.95z" fill="#EA4335"/>
+        <path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.4-4.45 1.2L43.65 25z" fill="#00832D"/>
+        <path d="M60.1 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.4 4.45-1.2L60.1 53z" fill="#2684FC"/>
+        <path d="M73.4 26.5L59.65 2.7C58.85 1.3 57.7.2 56.35-.6L43.65 25 60.1 53h27.2c0-1.55-.4-3.1-1.2-4.5L73.4 26.5z" fill="#FFBA00"/>
+      </svg>
+      Accéder aux ressources sur Google Drive
+      <span style="opacity:.6;font-weight:300;">→</span>
+    </a>
+  </header>
+
+  <!-- ── TABS ── -->
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" id="tab-tirage" role="tab" onclick="switchTab('tirage')">
+      <span class="tab-icon">🎲</span> Tirage au sort
+    </button>
+    <button class="tab-btn" id="tab-cartes" role="tab" onclick="switchTab('cartes')">
+      <span class="tab-icon">🃏</span> Cartes scénarios
+    </button>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       PANEL 1 — TIRAGE AU SORT
+  ════════════════════════════════════════ -->
+  <div class="tab-panel active" id="panel-tirage" role="tabpanel">
+    <div class="tirage-wrap">
+
+      <div class="panel-intro">
+        <h2>Attribution des <em>méthodes pédagogiques</em></h2>
+        <p>Chaque duo tire au sort sa méthode à approfondir et à présenter aux pairs.
+           12 méthodes · 12 tirages · aucun doublon.</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Progression</span>
+          <span id="progress-text">0 / 12</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="dots" id="dots"></div>
+
+      <!-- Result zone -->
+      <div class="result-zone" id="result-zone">
+        <div class="result-placeholder" id="placeholder">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+          Cliquez sur le bouton pour effectuer le premier tirage
+        </div>
+        <div class="result-duo"    id="result-duo">Duo suivant</div>
+        <div class="result-numero" id="result-numero">Tirage n° —</div>
+        <div class="result-icon"   id="result-icon"></div>
+        <div class="result-method" id="result-method"></div>
+        <div class="result-remaining" id="result-remaining"></div>
+        <a class="result-drive-link"
+           href="https://drive.google.com/drive/folders/12HkRH7IT9aC6PdTbNlmEASg0lp8538O8?usp=sharing"
+           target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 87.3 78" fill="none"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5L6.6 66.85z" fill="#0066DA"/><path d="M43.65 25L29.9 1.2C28.55.4 27 0 25.45 0c-1.55 0-3.1.4-4.45 1.2L7.25 25h36.4z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.1l5.55 10.85 7.9 12.95z" fill="#EA4335"/><path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.4-4.45 1.2L43.65 25z" fill="#00832D"/><path d="M60.1 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.4 4.45-1.2L60.1 53z" fill="#2684FC"/><path d="M73.4 26.5L59.65 2.7C58.85 1.3 57.7.2 56.35-.6L43.65 25 60.1 53h27.2c0-1.55-.4-3.1-1.2-4.5L73.4 26.5z" fill="#FFBA00"/></svg>
+          Consulter les ressources de cette méthode
+        </a>
+        <div class="completed-msg" id="completed-msg">
+          <div class="big">🎓 Tour complet !</div>
+          <div class="small">Les 12 méthodes ont été attribuées. Réinitialisez pour recommencer.</div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-group">
+        <button class="btn-draw" id="btn-draw" onclick="draw()">
+          <span class="dice" id="dice-icon">🎲</span>
+          Tirer au sort
+        </button>
+        <button class="btn-reset" onclick="reset()">↺ Réinitialiser</button>
+      </div>
+
+      <!-- History -->
+      <div class="history-toggle">
+        <button class="history-btn" id="history-btn" onclick="toggleHistory()">
+          <span class="arrow">▾</span>
+          Historique des tirages
+        </button>
+        <ul class="history-list" id="history-list"></ul>
+      </div>
+
+    </div>
+  </div><!-- /panel-tirage -->
+
+  <!-- ════════════════════════════════════════
+       PANEL 2 — CARTES SCÉNARIOS
+  ════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-cartes" role="tabpanel">
+
+    <div class="cartes-header">
+      <h2>Cartes scénarios <em>Alpha &amp; FLE</em></h2>
+      <p>
+        12 situations concrètes de formation, une par méthode pédagogique,
+        ancrées dans la réalité des centres d'accueil et des CHRS.
+        Cliquez sur une carte pour l'explorer en détail.
+      </p>
+      <div class="controls">
+        <button class="filter-btn active" data-filter="all"       onclick="filterCards(this,'all')">Toutes (12)</button>
+        <button class="filter-btn"        data-filter="formateur" onclick="filterCards(this,'formateur')">Formateur guide</button>
+        <button class="filter-btn"        data-filter="apprenant" onclick="filterCards(this,'apprenant')">Apprenant acteur</button>
+        <button class="filter-btn"        data-filter="groupe"    onclick="filterCards(this,'groupe')">Dynamique de groupe</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="print-bar">
+      <button class="btn-print" onclick="window.print()">🖨 Imprimer les cartes</button>
+    </div>
+
+  </div><!-- /panel-cartes -->
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="site-footer-left">
+      <a href="https://sites.google.com/view/ecosysteme-alpa-fle/" target="_blank">Écosystème ALPA-FLE</a>
+      &nbsp;·&nbsp; Armée du Salut · Formation bénévole
+    </div>
+    <a class="footer-drive-link"
+       href="https://drive.google.com/drive/folders/12HkRH7IT9aC6PdTbNlmEASg0lp8538O8?usp=sharing"
+       target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 87.3 78" fill="none"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5L6.6 66.85z" fill="#0066DA"/><path d="M43.65 25L29.9 1.2C28.55.4 27 0 25.45 0c-1.55 0-3.1.4-4.45 1.2L7.25 25h36.4z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.1l5.55 10.85 7.9 12.95z" fill="#EA4335"/><path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.4-4.45 1.2L43.65 25z" fill="#00832D"/><path d="M60.1 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.4 4.45-1.2L60.1 53z" fill="#2684FC"/><path d="M73.4 26.5L59.65 2.7C58.85 1.3 57.7.2 56.35-.6L43.65 25 60.1 53h27.2c0-1.55-.4-3.1-1.2-4.5L73.4 26.5z" fill="#FFBA00"/></svg>
+      Ressources Google Drive
+    </a>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- ════════════════════════════════════════
+     MODAL CARTES
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-top" id="modal-top"></div>
+    <div class="modal-inner">
+      <button class="modal-close" onclick="closeModal(null)">✕</button>
+      <div class="modal-num"   id="modal-num"></div>
+      <div class="modal-title" id="modal-title"></div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Scénario</div>
+        <div class="modal-scenario" id="modal-scenario"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Objectif pédagogique</div>
+        <div id="modal-objectif" style="font-size:14px;line-height:1.7;color:#333;"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Détails</div>
+        <div class="modal-grid">
+          <div class="modal-item"><div class="modal-item-label">Posture du formateur</div><div class="modal-item-val" id="modal-posture"></div></div>
+          <div class="modal-item"><div class="modal-item-label">Compétence travaillée</div><div class="modal-item-val" id="modal-competence"></div></div>
+          <div class="modal-item"><div class="modal-item-label">Supports / outils</div><div class="modal-item-val" id="modal-supports"></div></div>
+          <div class="modal-item"><div class="modal-item-label">Durée indicative</div><div class="modal-item-val" id="modal-duree"></div></div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Points de vigilance</div>
+        <div class="modal-vigilance-text" id="modal-vigilance"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Ressources complémentaires</div>
+        <a class="modal-drive-btn"
+           href="https://drive.google.com/drive/folders/12HkRH7IT9aC6PdTbNlmEASg0lp8538O8?usp=sharing"
+           target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 87.3 78" fill="none"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5L6.6 66.85z" fill="#0066DA"/><path d="M43.65 25L29.9 1.2C28.55.4 27 0 25.45 0c-1.55 0-3.1.4-4.45 1.2L7.25 25h36.4z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.1l5.55 10.85 7.9 12.95z" fill="#EA4335"/><path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.4-4.45 1.2L43.65 25z" fill="#00832D"/><path d="M60.1 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.4 4.45-1.2L60.1 53z" fill="#2684FC"/><path d="M73.4 26.5L59.65 2.7C58.85 1.3 57.7.2 56.35-.6L43.65 25 60.1 53h27.2c0-1.55-.4-3.1-1.2-4.5L73.4 26.5z" fill="#FFBA00"/></svg>
+          Accéder aux ressources de cette méthode sur Google Drive
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script>
+/* ── Données ── */
+const METHODS = [
+  { num:1,  icon:"📢", name:"Méthode expositive / transmissive",      color:"#5a7fa8", colorPale:"#eaf0f7", filters:["formateur"],
+    scenario:"Le formateur bénévole présente la correspondance entre les lettres de l'alphabet et leurs sons à l'aide d'un grand poster illustré. Il pointe chaque lettre, prononce le phonème associé et donne un exemple-image : « A comme arbre ». Les apprenants écoutent, regardent et répètent en chœur.",
+    objectif:"Installer les bases du code alphabétique chez des apprenants en situation d'illettrisme ou primo-arrivants sans scolarisation antérieure.",
+    posture:"Passeur de savoirs, voix et gestes clairs, rythme lent", competence:"Déchiffrage, correspondance graphème-phonème",
+    supports:"Poster alphabet illustré, ardoises individuelles", duree:"20–30 min", tags:["Transmission directe","Écoute active","Phonologie"],
+    vigilance:"Veiller à ne pas surcharger la séance : 4 à 5 lettres maximum. Valider la compréhension par une mini-répétition individuelle avant de passer à la suite." },
+  { num:2,  icon:"❓", name:"Méthode interrogative",                   color:"#8b5e8b", colorPale:"#f5eef5", filters:["formateur","apprenant"],
+    scenario:"Le formateur affiche une image représentant une scène de marché. Il pose des questions ouvertes : « Qu'est-ce que vous voyez ici ? », « Ce mot, on le retrouve où dans votre vie ? », « Que fait cette personne ? ». Chaque réponse est reformulée et écrite au tableau, servant de tremplin à la lecture.",
+    objectif:"Activer les connaissances implicites des apprenants et les relier au code écrit, en partant de ce qu'ils savent déjà.",
+    posture:"Questionneur bienveillant, guide socratique", competence:"Compréhension orale, lecture de mots en contexte",
+    supports:"Grandes images situationnelles, tableau ou paperboard", duree:"25–40 min", tags:["Questionnement","Image déclenchante","Oral vers écrit"],
+    vigilance:"Reformuler sans corriger brusquement. Accueillir toutes les réponses. Éviter les questions fermées oui/non qui bloquent l'échange." },
+  { num:3,  icon:"🙋", name:"Méthode participative",                   color:"#4a8b6f", colorPale:"#e8f5ee", filters:["apprenant","groupe"],
+    scenario:"En début de séance, le formateur demande à chaque apprenant de proposer un mot qui compte pour lui : son prénom, le nom de sa rue, un aliment qu'il aime. Ces mots sont écrits au tableau par le formateur. Ensemble, le groupe les lit, les syllabe, les copie. La séance se construit en direct avec les apports de tous.",
+    objectif:"Placer l'apprenant en auteur de ses propres supports d'apprentissage pour renforcer l'engagement et la mémorisation.",
+    posture:"Facilitateur, scribe bienveillant du groupe", competence:"Lecture, écriture, conscience phonologique",
+    supports:"Tableau blanc, cahiers, étiquettes-mots personnalisées", duree:"30–45 min", tags:["Co-construction","Mots-clés personnels","Engagement"],
+    vigilance:"Respecter l'ordre de prise de parole pour que personne ne soit oublié. Adapter la graphie à la lisibilité (écriture script grand format)." },
+  { num:4,  icon:"⚡", name:"Méthode active",                          color:"#c97a30", colorPale:"#fdf0e4", filters:["apprenant"],
+    scenario:"Les apprenants reçoivent une enveloppe contenant des étiquettes-mots illustrées à trier par catégories : aliments, vêtements, transports. Ils manipulent, comparent, lisent les étiquettes à voix basse, puis les classent dans des colonnes tracées sur leur table. Chaque apprenant justifie son classement au groupe.",
+    objectif:"Développer l'autonomie et la lecture fonctionnelle de mots du quotidien par la manipulation physique de supports.",
+    posture:"Observateur actif, relanceur de raisonnement", competence:"Lecture de mots, catégorisation lexicale",
+    supports:"Étiquettes illustrées, feuille de tri, ciseaux/colle", duree:"30–45 min", tags:["Manipulation","Tri lexical","Autonomie"],
+    vigilance:"Prévoir des étiquettes avec pictogrammes pour les apprenants en début d'alphabétisation. Valoriser les erreurs comme étapes du raisonnement." },
+  { num:5,  icon:"🌱", name:"Méthode expérientielle",                  color:"#5a8a5a", colorPale:"#eaf5ea", filters:["apprenant","groupe"],
+    scenario:"Après une sortie collective à la pharmacie du quartier, les apprenants s'expriment oralement sur ce qu'ils ont vu et vécu. Le formateur transcrit leurs phrases telles quelles au tableau : « J'ai vu des boîtes de médicaments », « Il y avait le mot ordonnance ». Ces phrases deviennent le texte de lecture de la séance suivante.",
+    objectif:"Ancrer la lecture-écriture dans un vécu partagé pour donner du sens à l'écrit et favoriser la mémorisation par l'expérience.",
+    posture:"Médiateur de l'expérience, transcripteur fidèle", competence:"Lecture de textes simples produits oralement, expression écrite",
+    supports:"Tableau ou paperboard, texte dicté photocopié, photos de la sortie", duree:"45–60 min (dont sortie)", tags:["Vécu réel","Dictée à l'adulte","Sens de la lecture"],
+    vigilance:"Conserver les tournures des apprenants sans correction syntaxique excessive dans un premier temps. Valoriser « leur » texte avant de le travailler." },
+  { num:6,  icon:"🔍", name:"Méthode de découverte / inductive",       color:"#3a7a8a", colorPale:"#e4f0f5", filters:["apprenant","formateur"],
+    scenario:"Le formateur écrit au tableau une série de mots contenant le même son : « mouton – tour – rouge – loup – coucou ». Il demande : « Qu'est-ce que ces mots ont en commun ? » Les apprenants observent, comparent, soulignent, proposent. Ensemble, ils formulent la règle : « ou se dit /u/ ». Ils cherchent alors d'autres mots avec « ou ».",
+    objectif:"Amener les apprenants à construire eux-mêmes les règles de la langue en observant des données, développant ainsi une posture de chercheur.",
+    posture:"Guide discret, garant de la rigueur sans donner les réponses", competence:"Conscience phonologique, règles phonétiques, déduction",
+    supports:"Tableau, mots-exemples sur étiquettes, surligneur", duree:"30–40 min", tags:["Observation","Raisonnement","Construction de règle"],
+    vigilance:"Choisir des exemples sans exceptions pour commencer. S'assurer que tous les apprenants voient bien les mots au tableau (taille de police)." },
+  { num:7,  icon:"🧩", name:"Méthode déductive",                       color:"#7a5a9a", colorPale:"#f2eef8", filters:["formateur","apprenant"],
+    scenario:"Le formateur annonce clairement la règle : « Les lettres oi se lisent toujours /wa/ ». Il montre des exemples : voix, doigt, bois, roi. Les apprenants s'entraînent ensuite à lire une liste de mots nouveaux contenant « oi », puis les utilisent dans des phrases orales. Enfin, une dictée de 3 mots clôt l'exercice d'application.",
+    objectif:"Stabiliser une règle phonique déjà présentée et en automatiser l'application dans la lecture et l'écriture.",
+    posture:"Instructeur structuré, correcteur immédiat et explicatif", competence:"Application d'une règle phonique, déchiffrage, orthographe",
+    supports:"Fiche règle illustrée, liste de mots, ardoises", duree:"25–35 min", tags:["Règle → exemples","Application","Automatisation"],
+    vigilance:"La règle doit être mémorisée visuellement (affichée en classe). Prévoir des exercices progressifs : lecture seule → lecture en phrase → production." },
+  { num:8,  icon:"🤝", name:"Méthode collaborative / coopérative",     color:"#4a7a9a", colorPale:"#e4eef5", filters:["apprenant","groupe"],
+    scenario:"Par binômes, les apprenants reçoivent une phrase découpée en étiquettes-mots mélangées. Ensemble, ils reconstituent la phrase dans le bon ordre, s'expliquent leurs choix, la lisent à voix haute, puis la comparent avec les autres binômes. La phrase correcte est construite collectivement au tableau.",
+    objectif:"Développer la syntaxe et la conscience de la phrase en mobilisant l'entraide et la discussion entre pairs.",
+    posture:"Organisateur, arbitre bienveillant, observateur des échanges", competence:"Syntaxe de la phrase, lecture, entraide langagière",
+    supports:"Étiquettes-mots prédécoupées, tableau collectif", duree:"30–45 min", tags:["Binômes","Entraide","Syntaxe en contexte"],
+    vigilance:"Former des binômes de niveaux complémentaires. Veiller à ce que chacun ait un rôle actif (un lit, l'autre place les étiquettes, puis on inverse)." },
+  { num:9,  icon:"🪞", name:"Méthode réflexive",                       color:"#8a6a4a", colorPale:"#f5f0ea", filters:["apprenant"],
+    scenario:"En fin de séance, chaque apprenant prend 5 minutes pour compléter son carnet de bord personnel : il dessine ou écrit ce qu'il a appris, ce qu'il a trouvé difficile, ce qu'il veut retravailler. Le formateur circule, pose des questions ouvertes : « Qu'est-ce qui était nouveau pour toi aujourd'hui ? » Les carnets ne sont pas notés, ils appartiennent aux apprenants.",
+    objectif:"Développer la métacognition et l'autonomie d'apprentissage en aidant chacun à identifier ses progrès et ses besoins.",
+    posture:"Accompagnateur de la pensée, non-évaluateur", competence:"Métacognition, expression écrite libre, auto-évaluation",
+    supports:"Carnet de bord illustré, stylos de couleur, pictogrammes émotion", duree:"10–15 min en clôture de séance", tags:["Carnet de bord","Retour sur soi","Progrès visibles"],
+    vigilance:"Proposer des pictogrammes pour les apprenants non scripteurs. Ne jamais lire le carnet à voix haute sans accord de l'apprenant. Respecter le temps individuel." },
+  { num:10, icon:"🎮", name:"Méthode ludique",                         color:"#c95a5a", colorPale:"#f9eaea", filters:["apprenant","groupe"],
+    scenario:"Jeu de loto de mots : chaque apprenant reçoit une grille de 9 cases avec des mots illustrés. Le formateur tire au sort des cartons et lit le mot à voix haute (ou montre seulement l'image). L'apprenant cherche sur sa grille, lit le mot, le coche s'il l'a. Le premier à compléter une ligne crie « Loto ! » et relit ses mots pour valider.",
+    objectif:"Renforcer la reconnaissance globale de mots-outils et de mots du quotidien dans un climat de plaisir et de décontraction.",
+    posture:"Animateur enthousiaste, régulateur du jeu", competence:"Lecture globale, mots-outils, concentration",
+    supports:"Grilles de loto personnalisées, cartons-mots, jetons", duree:"20–30 min", tags:["Jeu de société","Lecture globale","Motivation"],
+    vigilance:"Adapter la difficulté des mots au niveau du groupe. Prévoir des grilles illustrées pour les débutants. Le bruit festif est normal et positif !" },
+  { num:11, icon:"💛", name:"Méthode socio-affective",                  color:"#c97a8a", colorPale:"#f9eef0", filters:["apprenant","groupe"],
+    scenario:"La séance s'ouvre sur un tour de parole des prénoms : chaque apprenant écrit son prénom sur une grande étiquette, le présente au groupe, raconte pourquoi il porte ce prénom ou ce qu'il signifie dans sa langue. Le formateur aide à transcrire les prénoms en français, en montre la syllabation. Ces étiquettes deviennent les prénoms-supports de tout le trimestre.",
+    objectif:"Créer un climat de confiance et de reconnaissance mutuelle en faisant de l'identité personnelle le premier support d'apprentissage.",
+    posture:"Accueillant, témoin valorisant de chaque histoire", competence:"Présentation de soi, écriture du prénom, confiance en soi",
+    supports:"Grandes étiquettes cartonnées, marqueurs, ficelle de présentoir", duree:"40–60 min (1re séance idéalement)", tags:["Identité","Confiance","Prénoms-supports"],
+    vigilance:"Respecter ceux qui ne souhaitent pas partager l'histoire de leur prénom. Ne jamais corriger la prononciation d'un prénom étranger devant le groupe." },
+  { num:12, icon:"🗂️", name:"Méthode par projet",                      color:"#6a8a4a", colorPale:"#eef5ea", filters:["apprenant","groupe"],
+    scenario:"Sur 4 séances, le groupe élabore un livret de recettes bilingues : chaque apprenant choisit une recette de son pays, la dicte au formateur qui l'aide à la transcrire et à la simplifier. Le groupe illustre les recettes, choisit un titre collectif, photocopie le livret et l'offre au centre. Chacun présente « sa » recette lors de la séance finale.",
+    objectif:"Mobiliser toutes les compétences (oral, lecture, écriture, vocabulaire) dans un projet porteur de sens, valorisant et visible socialement.",
+    posture:"Chef de projet pédagogique, coordinateur enthousiaste", competence:"Écriture fonctionnelle, prise de parole, lexique alimentaire",
+    supports:"Modèle de fiche-recette, appareils photo / smartphones, reprographie", duree:"4 × 60 min sur 4 semaines", tags:["Projet collectif","Livret de recettes","Valorisation"],
+    vigilance:"Définir clairement le livrable dès le début. Prévoir un plan B si certains apprenants sont absents. Célébrer la remise du livret !" }
+];
+
+/* ══ TABS ══ */
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+/* ══ TIRAGE ══ */
+let queue = [], drawn = [], historyOpen = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function init() {
+  queue = shuffle(METHODS.map((_,i)=>i));
+  drawn = [];
+  renderDots(); updateProgress();
+  document.getElementById('placeholder').style.display   = '';
+  document.getElementById('result-duo').style.display    = 'none';
+  document.getElementById('result-numero').style.display = 'none';
+  document.getElementById('result-icon').style.display   = 'none';
+  document.getElementById('result-method').style.display = 'none';
+  document.getElementById('result-remaining').style.display = 'none';
+  document.getElementById('completed-msg').style.display = 'none';
+  document.getElementById('result-zone').classList.remove('has-result');
+  document.getElementById('btn-draw').disabled = false;
+  document.getElementById('history-list').innerHTML = '';
+  document.getElementById('history-list').classList.remove('visible');
+  document.getElementById('history-btn').classList.remove('open');
+  historyOpen = false;
+}
+
+function renderDots() {
+  const c = document.getElementById('dots'); c.innerHTML = '';
+  for (let i=0; i<12; i++) { const d=document.createElement('div'); d.className='dot'; c.appendChild(d); }
+  for (let s=0; s<drawn.length; s++) {
+    const el = c.children[s];
+    el.classList.add(s===drawn.length-1 ? 'current' : 'used');
+  }
+}
+
+function updateProgress() {
+  const n = drawn.length;
+  document.getElementById('progress-text').textContent = `${n} / 12`;
+  document.getElementById('progress-fill').style.width = `${(n/12)*100}%`;
+}
+
+function draw() {
+  if (!queue.length) return;
+  const dice = document.getElementById('dice-icon');
+  dice.classList.add('spinning');
+  setTimeout(()=>dice.classList.remove('spinning'), 400);
+  const idx = queue.shift(); const method = METHODS[idx]; drawn.push(idx);
+  renderDots(); updateProgress(); showResult(method, drawn.length);
+  if (!queue.length) { document.getElementById('btn-draw').disabled=true; setTimeout(showCompleted,500); }
+}
+
+function showResult(method, drawNum) {
+  const zone = document.getElementById('result-zone');
+  document.getElementById('placeholder').style.display  = 'none';
+  document.getElementById('completed-msg').style.display= 'none';
+  const iconEl   = document.getElementById('result-icon');
+  const methodEl = document.getElementById('result-method');
+  iconEl.replaceWith(iconEl.cloneNode(true));
+  methodEl.replaceWith(methodEl.cloneNode(true));
+  const newIcon   = document.getElementById('result-icon');
+  const newMethod = document.getElementById('result-method');
+  document.getElementById('result-duo').textContent    = `Duo n° ${drawNum}`;
+  document.getElementById('result-numero').textContent = `Tirage ${drawNum} sur 12`;
+  newIcon.textContent   = method.icon;
+  newMethod.textContent = method.name;
+  const rem = 12 - drawNum;
+  document.getElementById('result-remaining').textContent =
+    rem===0 ? '' : rem===1 ? '1 méthode restante' : `${rem} méthodes restantes`;
+  document.getElementById('result-duo').style.display      = 'block';
+  document.getElementById('result-numero').style.display   = 'block';
+  newIcon.style.display   = 'block';
+  newMethod.style.display = 'block';
+  document.getElementById('result-remaining').style.display = rem>0 ? 'block' : 'none';
+  zone.classList.add('has-result');
+  addHistory(drawNum, method);
+}
+
+function showCompleted() {
+  ['result-duo','result-numero','result-icon','result-method','result-remaining']
+    .forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('completed-msg').style.display='flex';
+}
+
+function addHistory(num, method) {
+  const list = document.getElementById('history-list');
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="history-num">${num}.</span><span class="history-icon">${method.icon}</span><span class="history-name">${method.name}</span>`;
+  list.appendChild(li);
+  if (historyOpen) list.classList.add('visible');
+}
+
+function toggleHistory() {
+  historyOpen = !historyOpen;
+  document.getElementById('history-list').classList.toggle('visible', historyOpen);
+  document.getElementById('history-btn').classList.toggle('open', historyOpen);
+}
+
+function reset() {
+  if (drawn.length>0 && !confirm('Réinitialiser tous les tirages ?')) return;
+  init();
+}
+
+/* ══ CARTES ══ */
+function buildCards() {
+  const grid = document.getElementById('grid');
+  METHODS.forEach((m,i) => {
+    const card = document.createElement('div');
+    card.className = 'card'; card.dataset.filters = m.filters.join(' ');
+    card.onclick = ()=>openModal(i);
+    card.innerHTML = `
+      <div class="card-accent" style="background:${m.color}"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-icon-wrap" style="background:${m.colorPale}">${m.icon}</div>
+          <div class="card-meta">
+            <div class="card-num">Méthode ${String(m.num).padStart(2,'0')}</div>
+            <div class="card-title">${m.name}</div>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-scenario-label">Scénario</div>
+        <div class="card-scenario" style="border-color:${m.color}">${m.scenario.substring(0,160)}…</div>
+        <div class="card-tags">${m.tags.map(t=>`<span class="tag tag-activity">${t}</span>`).join('')}</div>
+        <div class="card-footer-row">
+          <div class="card-footer-item">
+            <span class="card-footer-label">Posture</span>
+            <span class="card-footer-val">${m.posture.split(',')[0]}</span>
+          </div>
+          <div class="card-footer-item">
+            <span class="card-footer-label">Compétence</span>
+            <span class="card-footer-val">${m.competence.split(',')[0]}</span>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openModal(i) {
+  const m = METHODS[i];
+  document.getElementById('modal-top').style.background = m.color;
+  document.getElementById('modal-num').textContent   = `Méthode ${String(m.num).padStart(2,'0')} / 12`;
+  document.getElementById('modal-title').textContent = m.name;
+  document.getElementById('modal-scenario').style.borderColor = m.color;
+  document.getElementById('modal-scenario').textContent = m.scenario;
+  document.getElementById('modal-objectif').textContent  = m.objectif;
+  document.getElementById('modal-posture').textContent   = m.posture;
+  document.getElementById('modal-competence').textContent= m.competence;
+  document.getElementById('modal-supports').textContent  = m.supports;
+  document.getElementById('modal-duree').textContent     = m.duree;
+  document.getElementById('modal-vigilance').textContent = m.vigilance;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e===null || e.target===document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function filterCards(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(c=>{
+    c.style.display = (filter==='all'||c.dataset.filters.includes(filter)) ? '' : 'none';
+  });
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(null); });
+
+/* ── Boot ── */
+init();
+buildCards();
+</script>
+</body>
+</html>
